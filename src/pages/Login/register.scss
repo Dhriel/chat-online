@@ -1,0 +1,84 @@
+@import './../../assets/presets.scss'; 
+
+
+.box {
+    background-color: $primary;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    h1{
+        color: #fff;
+        font-size: 5rem;
+    }
+
+    p{
+        font-size: 1rem;
+        color: #ccc;
+    }
+
+    button{
+        background-color: $terc;
+        padding: 13px;
+        width: 180px;
+        margin-top: 10px;
+        border-radius: 35px;
+        color: #fff;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        box-shadow: -1px 15px 1px #0a1fdb28;
+        box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.568);
+
+        &:hover{
+        background-color: #1a6ce7;
+
+        }
+    }
+
+    a{
+        color: #fff;
+        margin-top:25px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    min-width: 500px;
+    max-width: 100%;
+
+
+    label{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+
+        span{
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        input{
+            width: 100%;
+            height: 40px;
+            padding: 8px;
+            background-color: $secundary;
+            border-width: 0;
+            border-radius: 4px;
+            color: #fff;
+            
+        }
+    }
+
+}

@@ -1,0 +1,24 @@
+@import './../../assets/presets.scss'; 
+
+.container{
+    background-color: $primary;
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 150px 1fr 350px;
+
+}
+
+.nav-area{
+
+
+}
+
+.chat-box{
+    background-color: $secundary;
+    
+}
+
+.info-box{
+
+}
