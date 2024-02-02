@@ -13,7 +13,7 @@
 
     h1{
         color: #fff;
-        font-size: 5rem;
+        font-size: 4rem;
     }
 
     p{
@@ -24,15 +24,14 @@
     button{
         background-color: $terc;
         padding: 13px;
-        width: 180px;
+        width: 155px;
         margin-top: 10px;
         border-radius: 35px;
         color: #fff;
         font-size: 18px;
         border: none;
         cursor: pointer;
-        box-shadow: -1px 15px 1px #0a1fdb28;
-        box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.568);
+        box-shadow: inset 5px 5px 10px rgba(15, 113, 151, 0.596);
 
         &:hover{
         background-color: #1a6ce7;
@@ -40,14 +39,17 @@
         }
     }
 
-    a{
-        color: #fff;
-        margin-top:25px;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    
+    .link-area{
+        min-width: 500px;
+        max-width: 100%;
+        margin-top: 20px;
 
+        a{
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    }
 }
 
 .form {
@@ -78,6 +80,12 @@
             border-radius: 4px;
             color: #fff;
             
+        }
+
+        p{
+            font-size: 15px;
+            margin-top: 4px;
+            color: #d43e3e;
         }
     }
 

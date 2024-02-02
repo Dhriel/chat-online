@@ -1,5 +1,7 @@
 import './home.scss';
 
+import {Link} from 'react-router-dom';
+
 export function Home(){
     return(
         <div className='container'>
