@@ -1,3 +1,14 @@
 $primary: #131313;
 $secundary: #212529;
 $terc: #00388C;
+
+.load-area{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.load-area img{
+    width: 40px;
+    height: 40px;
+}

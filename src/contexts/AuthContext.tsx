@@ -40,7 +40,7 @@ export default function AuthProvider({children}: AuthProviderProps){
     useEffect(()=>{
         async function loadUser(){
 
-            const storageUser = localStorage.getItem('@user');
+            const storageUser = localStorage.getItem('@userData');
 
             if(storageUser){
                 setUser(JSON.parse(storageUser));
