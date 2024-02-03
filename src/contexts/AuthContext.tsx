@@ -67,7 +67,8 @@ export default function AuthProvider({children}: AuthProviderProps){
             let data = {
                 name: name || '',
                 email: email,
-                uid: uid
+                uid: uid,
+                image: '',
             }
 
             await setDoc(doc(db, 'users', uid), data)

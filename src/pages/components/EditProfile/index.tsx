@@ -5,7 +5,7 @@ import {db, storage} from '../../../services/firebaseConnection';
 import {collection, addDoc} from 'firebase/firestore';
 import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
 
-import './createroom.scss';
+import './../CreateRoom/createroom.scss'
 
 import {FiUpload, FiX} from 'react-icons/fi';
 import { toast } from 'react-toastify';
@@ -15,11 +15,10 @@ import loadImage from '../../../assets/images/load.svg';
 
 interface RoomProps {
     isOpen: boolean;
-    refresh: () => void;
     changeVisibility: () => void;
 }
 
-export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
+export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
     const {signed, user} = useContext(AuthContext);
     const roomRef = useRef<HTMLInputElement | null>(null);
 
@@ -46,8 +45,7 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
         setImageAvatar(null);
         setAvatarUrl(null);
         setLoading(false);
-        refresh();
-        changeVisibility();
+        changeVisibility()
         
     }
 
@@ -66,14 +64,14 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
              
 
             const docRef =  await addDoc(collection(db, 'rooms'), {
-                createdAt: new Date(),
+                createdAt: formattedDate,
                 roomImage: url,
                 roomName: roomRef.current?.value,
                 owner: user?.uid,
             })
             
             await addDoc(collection(docRef, 'messages'), {
-                createdAt: formattedDate,
+                createdAt: new Date().toLocaleDateString(),
                 name: 'Sytem',
                 text: 'Seja bem-vindo!'
             })
@@ -144,10 +142,10 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
 
                     </label>
                     
-                    <p>Nome do grupo</p>
+                    <p>Nome</p>
                     <input
                         type='text'
-                        placeholder='Digite algum nome'
+                        placeholder='Altere seu nome'
                         className='input'
                         ref={roomRef}
                     />
@@ -158,7 +156,7 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
                         </div>
                     ) : (
                         <button className='create-btn' onClick={handleSubmit}>
-                            Criar Grupo
+                            Alterar Perfil
                         </button>
                     )}
 

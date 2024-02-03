@@ -1,25 +1,27 @@
-// Import the functions you need from the SDKs you need
+// firebaseConnection.js
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
-import {getStorage} from 'firebase/storage';
-import {getFirestore} from 'firebase/firestore';
-import {getAuth} from 'firebase/auth';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCCIB47nZlh4ZgCRZvZK-AXF3MjMsk_Euw",
-  authDomain: "chatonline-8864b.firebaseapp.com",
-  projectId: "chatonline-8864b",
-  storageBucket: "chatonline-8864b.appspot.com",
-  messagingSenderId: "798226275564",
-  appId: "1:798226275564:web:8fc54384a5371db36519c9",
-  measurementId: "G-BBKTF482JD"
+// Nova configuração do Firebase
+const anotherFirebaseConfig = {
+  apiKey: "AIzaSyDorDJQHWpM9DE0Gumcfatguqkejvm44zI",
+  authDomain: "chatonline-b9c83.firebaseapp.com",
+  projectId: "chatonline-b9c83",
+  storageBucket: "chatonline-b9c83.appspot.com",
+  messagingSenderId: "761213364644",
+  appId: "1:761213364644:web:52576a547e75815c3fb931",
+  measurementId: "G-S07YPLBB2N"
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+// Inicialize o Firebase com a nova configuração
+const newChatApp = initializeApp(anotherFirebaseConfig);
 
-const db = getFirestore(firebaseApp);
-const auth = getAuth(firebaseApp);
-const storage = getStorage(firebaseApp);
+// Obtenha instâncias para o novo Firebase
+const newDb = getFirestore(newChatApp);
+const newAuth = getAuth(newChatApp);
+const newStorage = getStorage(newChatApp);
 
-
-export {db, auth, storage};
+// Exporte apenas as instâncias do novo Firebase
+export { newDb as db, newAuth as auth, newStorage as storage };
