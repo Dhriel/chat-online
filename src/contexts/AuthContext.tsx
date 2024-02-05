@@ -1,7 +1,7 @@
 import {useState, ReactNode, createContext, useEffect} from 'react';
 
 import { auth, db } from '../services/firebaseConnection';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut} from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, User} from 'firebase/auth';
 import {setDoc, doc, getDoc} from 'firebase/firestore';
 
 import { toast } from 'react-toastify';
@@ -19,7 +19,6 @@ type AuthContextData = {
     signed: boolean;
     loadingAuth: boolean;
     setUser: (user: UserProps) => void;
-    storageUser: (data : UserProps) => void;
     signUp: (email:string, password:string, name:string) => void;
     signIn: (email:string, password:string) => void;
     logOut: () => void;
@@ -37,19 +36,36 @@ export default function AuthProvider({children}: AuthProviderProps){
 
     useEffect(()=>{
         async function loadUser(){
+            onAuthStateChanged(auth, (user) =>{
+                if(user){
 
-            const storageUser = localStorage.getItem('@userData');
+                    let uid = user.uid;
 
-            if(storageUser){
-                setUser(JSON.parse(storageUser));
-            }else{
-                setUser(null);
-            }
+                    const docRef = doc(db, 'user', uid);
+                    getDoc(docRef)
+                    .then((snapshot)=>{
+
+                        let data : UserProps = {
+                            uid,
+                            name: snapshot.data()?.name,
+                            image: snapshot.data()?.image,
+                        }
+
+                        setUser(data);
+                    }).catch((err) =>{
+                        setUser(null);
+                    })
+
+                }else{
+                    setUser(null);
+                }
+            })
+
         }
 
         loadUser();
 
-    }, [])
+    }, []);
 
 
     // Cadastrar
@@ -70,7 +86,6 @@ export default function AuthProvider({children}: AuthProviderProps){
 
             await setDoc(doc(db, 'users', uid), data)
             setUser(data);
-            storageUser(data);
             setLoadingAuth(false)
             navigate('/', {replace: true});
         })
@@ -127,7 +142,6 @@ export default function AuthProvider({children}: AuthProviderProps){
             }
 
             setUser(data);
-            storageUser(data);
             setLoadingAuth(false);
             navigate('/', {replace: true});
 
@@ -139,15 +153,14 @@ export default function AuthProvider({children}: AuthProviderProps){
     }
 
     // Permanecer Logado
-    function storageUser(data :UserProps){
-        localStorage.setItem('@userData', JSON.stringify(data));
-    }
 
         // Deslogar
     async function logOut(){
         await signOut(auth);
-        localStorage.removeItem('@user');
         setUser(null);
+        navigate('/login', {replace: true});
+        toast.success('Usuário Deslogado', {theme: 'dark'});
+
     }
 
     return(
@@ -160,7 +173,6 @@ export default function AuthProvider({children}: AuthProviderProps){
                 signIn,
                 logOut,
                 setUser,
-                storageUser
             }}
         >
             {children}

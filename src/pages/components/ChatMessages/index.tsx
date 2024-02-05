@@ -15,12 +15,10 @@ interface ChatMessagesProps {
 
 export function ChatMessages({id} : ChatMessagesProps) {
     const [messages, setMessages] = useState<MessagesProps[]>([]);
-    const [inputText, setInputText] = useState<string>('');
     
-    const {user} = useContext(AuthContext);
+    const {user, signed} = useContext(AuthContext);
     
     const inputTextRef = useRef<HTMLInputElement | null>(null);
-
     const scrollRef = useRef<HTMLInputElement>(null);
 
     useEffect(()=>{
@@ -66,10 +64,16 @@ export function ChatMessages({id} : ChatMessagesProps) {
 
 
     async function handleMessages(): Promise<void>{
-        if(inputText === '') return;
+        if(!signed) return;
+        let message = '';
 
-        let texto = inputText;
-        setInputText('');
+        if (inputTextRef.current) {
+            console.log(inputTextRef.current.value);
+            message = inputTextRef.current.value;
+            inputTextRef.current.value = ''; // Define o valor do input como uma string vazia
+        }
+
+        console.log(message);
 
         let formatedDate = getDate();
         
@@ -78,7 +82,7 @@ export function ChatMessages({id} : ChatMessagesProps) {
             const collectionRef = collection(docRef, 'messages');
             await addDoc(collectionRef, {
                 createdAt: new Date(),
-                text: texto,
+                text: message,
                 name: user?.name,
                 image: user?.image,
                 dateHour: formatedDate
@@ -114,6 +118,7 @@ export function ChatMessages({id} : ChatMessagesProps) {
       
     return(
         <main className='chat-box'>
+           
             <div className='chat-area' ref={scrollRef}>
                 {messages && messages.map((item, index)=> (
                     <div key={index} className='chat-container'>
@@ -138,8 +143,7 @@ export function ChatMessages({id} : ChatMessagesProps) {
                 <input
                     type='textarea'
                     placeholder='Escreva algo aqui'
-                    onChange={(e)=> setInputText(e.target.value)}
-                    value={inputText}
+                    ref={inputTextRef}
                     onKeyDown={handleKeyDown}
                     
                 />

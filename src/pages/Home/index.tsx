@@ -74,7 +74,7 @@ export function Home(){
             {/* Mostrar grupo ao lado */}
             <section className='info-box'>
                 <div>
-                    <image/>
+                    {/* <image/> */}
                 </div>
 
                 <h3>Nome</h3>

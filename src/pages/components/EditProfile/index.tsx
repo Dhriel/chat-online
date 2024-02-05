@@ -13,6 +13,8 @@ import { toast } from 'react-toastify';
 import loadImage from '../../../assets/images/load.svg';
 
 import {UserProps} from '../../types/Card.type';
+import { Link } from 'react-router-dom';
+
 
 
 interface RoomProps {
@@ -21,7 +23,7 @@ interface RoomProps {
 }
 
 export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
-    const {signed, user, setUser, storageUser} = useContext(AuthContext);
+    const {signed, user, setUser, logOut} = useContext(AuthContext);
 
     const [imageAvatar,setImageAvatar] = useState<File | null>(null);
     const [nameInput, setNameInput] = useState<string>(user && user?.name || '');
@@ -101,7 +103,6 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
                     };
 
                     setUser(data);
-                    storageUser(data);
                   })
 
             }else{
@@ -114,6 +115,8 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
 
     }
 
+    
+
 
     if (isOpen){
     return (
@@ -122,41 +125,60 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
                     <button className='x-btn'
                         onClick={changeVisibility}
                     ><FiX size={20} color='#ffff'/></button>
-                    <label>
-                        <span><FiUpload size={30} color='#ffff'/></span>
-                        <input type='file' accept='image/*' onChange={handleFile} className='input-file'/>
-
-                        {
-                                avatarUrl === null ? (
-                                        <div style={{width: 125, height: 125, backgroundColor: "#000000", borderRadius: 65}}></div>   
-
-                                    ) : (
-                                        <img src={avatarUrl} alt='Foto do grupo'/>
-                                    
-                                        )
-                                    }
-
-                    </label>
                     
-                    <p>Nome</p>
-                    <input
-                        type='text'
-                        placeholder='Altere seu nome'
-                        className='input'
-                        value={nameInput}
-                        onChange={(e)=> setNameInput(e.target.value)}
-                    />
+                    {signed ? 
+                        <>
+                            <label>
+                                <span><FiUpload size={30} color='#ffff'/></span>
+                                <input type='file' accept='image/*' onChange={handleFile} className='input-file'/>
 
-                    { loading ? (
-                         <div className='load-area'>
-                            <img src={loadImage} alt='carregando' />
+                                {
+                                        avatarUrl === null ? (
+                                                <div style={{width: 125, height: 125, backgroundColor: "#000000", borderRadius: 65}}></div>   
+
+                                            ) : (
+                                                <img src={avatarUrl} alt='Foto do grupo'/>
+                                            )
+                                }
+
+                            </label>
+                    
+                        <p>Nome</p>
+                        <input
+                            type='text'
+                            placeholder='Altere seu nome'
+                            className='input'
+                            value={nameInput}
+                            onChange={(e)=> setNameInput(e.target.value)}
+                        />
+
+                        <div className='btn-area'>
+                            { loading ? (
+                                    <div className='load-area'>
+                                        <img src={loadImage} alt='carregando' />
+                                    </div>
+                                ) : (
+                                    <button className='create-btn' onClick={handleSubmit}>
+                                        Salvar Perfil
+                                    </button>
+                                )}
+
+                                <button className='create-btn' onClick={logOut}
+                                    style={{backgroundColor: 'red'}}
+                                >
+                                        Sair da conta
+                                </button>
                         </div>
-                    ) : (
-                        <button className='create-btn' onClick={handleSubmit}>
-                            Alterar Perfil
-                        </button>
-                    )}
+                        </>
+                        :
 
+                        <div className='login-area'>
+                            <Link to='/login'>
+                                Fazer Login
+                            </Link>
+                        </div>
+
+                    }
 
                 </div>
                 
