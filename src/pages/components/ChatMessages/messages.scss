@@ -1,0 +1,106 @@
+@import './../../../assets/presets.scss';
+
+.chat-box{
+    display: flex;
+    display: grid;
+    width: 100%;
+    max-height: 100vh;
+    grid-template-rows: 1fr 100px;
+    overflow: hidden;
+}
+
+
+.chat-area{
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: $secundary;
+
+    .chat-container{
+        padding: 7px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: row;
+
+        &:hover{
+            background-color: #13131391;
+        }
+
+
+        .chat-image{
+            width: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+
+            img{
+                width: 45px;
+                height: 45px;
+                border-radius: 30px;
+                object-fit: cover;
+            }
+        }
+
+
+        .chat-right{
+            width: 90%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 2px;
+            margin-left: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            div{
+                display: flex;
+                align-items: center;
+            }
+
+            .chat-username{
+                font-weight: bold;
+                color: #fff;
+                margin-right: 10px;
+            }
+
+            .chat-time{
+                font-weight: bold;
+                color: #929292;
+                font-size: 10px;
+            }
+
+            .chat-text{
+                color: #CCCCCC;
+            }
+
+        }
+
+    }
+
+
+}
+
+
+
+
+.message-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $secundary;
+
+    input{
+        background-color: $primary;
+        width: 98%;
+        height: 60px;
+        border-radius: 30px;
+        border-width: 0;
+        color: #ccc;
+        font-size: 14px;
+        padding: 20px;
+        
+        &:focus{
+            outline: 1px solid #cccccc50;
+        }
+
+    }
+}

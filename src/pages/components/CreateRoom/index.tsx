@@ -56,14 +56,8 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
 
         try{
 
-            const currentDate = new Date();
-            const formattedDate = currentDate.toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: '2-digit',
-            }); 
+            let formatedDate = getDate();
 
-             
 
             const docRef =  await addDoc(collection(db, 'rooms'), {
                 createdAt: new Date(),
@@ -73,9 +67,10 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
             })
             
             await addDoc(collection(docRef, 'messages'), {
-                createdAt: formattedDate,
+                createdAt: new Date(),
                 name: 'Sytem',
-                text: 'Seja bem-vindo!'
+                text: 'Seja bem-vindo!',
+                dateHour: formatedDate
             })
 
 
@@ -118,6 +113,21 @@ export  function CreateRoom({isOpen, changeVisibility, refresh} : RoomProps) {
            
         }
 
+    };
+
+    function getDate() : string{
+        let date = new Date();
+
+        let formatedDate = [
+        ("0" + date.getDate()).slice(-2),
+        ("0" + (date.getMonth() + 1)).slice(-2),
+        date.getFullYear().toString().slice(-2)
+        ].join('/') + " " +
+        ("0" + date.getHours()).slice(-2) +
+        ":" +
+        ("0" + date.getMinutes()).slice(-2);
+        
+        return formatedDate;
     }
 
 

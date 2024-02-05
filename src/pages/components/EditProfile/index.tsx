@@ -2,8 +2,8 @@ import {ChangeEvent, useContext, useRef, useState} from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
 
 import {db, storage} from '../../../services/firebaseConnection';
-import {collection, addDoc} from 'firebase/firestore';
-import {ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+import {doc, updateDoc} from 'firebase/firestore';
+import {ref, uploadBytes, getDownloadURL,} from 'firebase/storage';
 
 import './../CreateRoom/createroom.scss'
 
@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 
 import loadImage from '../../../assets/images/load.svg';
 
+import {UserProps} from '../../types/Card.type';
+
 
 interface RoomProps {
     isOpen: boolean;
@@ -19,10 +21,10 @@ interface RoomProps {
 }
 
 export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
-    const {signed, user} = useContext(AuthContext);
-    const roomRef = useRef<HTMLInputElement | null>(null);
+    const {signed, user, setUser, storageUser} = useContext(AuthContext);
 
     const [imageAvatar,setImageAvatar] = useState<File | null>(null);
+    const [nameInput, setNameInput] = useState<string>(user && user?.name || '');
     const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -30,13 +32,13 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
 
     async function handleSubmit(){
         if(!signed) {
-            toast.error('Você precisar estar logado para criar uma sala!', {theme: 'dark'});
+            toast.error('Você precisar estar logado para editar seu perfil!', {theme: 'dark'});
             return;
-        } else if(roomRef.current?.value === ''){
-            toast.error('O grupo precisa de um nome', {theme: 'dark'});
+        } else if(nameInput.length < 3){
+            toast.error('Seu nome precisa ter pelo menos 3 caracteries. ', {theme: 'dark'});
             return;
         }else if(!avatarUrl){
-            toast.error('Adicione uma imagem ao grupo!', {theme: 'dark'});
+            toast.error('Adicione uma imagem ao seu perfil!', {theme: 'dark'});
             return;
         }
 
@@ -45,42 +47,15 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
         setImageAvatar(null);
         setAvatarUrl(null);
         setLoading(false);
-        changeVisibility()
+        toast.success('Perfil atualizado com sucesso!', {theme: 'dark'});
+        changeVisibility();
         
     }
 
 
     async function handleCreate(url: string){
 
-        try{
-
-            const currentDate = new Date();
-            const formattedDate = currentDate.toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: '2-digit',
-            }); 
-
-             
-
-            const docRef =  await addDoc(collection(db, 'rooms'), {
-                createdAt: formattedDate,
-                roomImage: url,
-                roomName: roomRef.current?.value,
-                owner: user?.uid,
-            })
-            
-            await addDoc(collection(docRef, 'messages'), {
-                createdAt: new Date().toLocaleDateString(),
-                name: 'Sytem',
-                text: 'Seja bem-vindo!'
-            })
-
-
-        }catch(error){
-            toast.error('Erro ao criar sala', {theme: 'dark'});
-            setLoading(false);
-        }
+       // Mudar a foto em todos os lugares
 
     }
 
@@ -100,20 +75,41 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
     }
 
     async function handleUpload(){
-        if(imageAvatar){
+        try{
 
-            try{
-                const uploadRef = ref(storage, `rooms/${roomRef.current?.value}`);
+            if(imageAvatar && user && user.uid){
+
+                const currentUid = user.uid;
+                const uploadRef = ref(storage, `users/${currentUid}`);
                 const snapshot = await uploadBytes(uploadRef, imageAvatar);
-                await getDownloadURL(snapshot.ref).then(async (donwloadUrl)=>{
-                    let urlFoto = donwloadUrl;
-                    await handleCreate(urlFoto);
-                })
-            }catch(err){
-                toast.error('Erro ao criar sala', {theme: 'dark'});
-                setLoading(false);
+
+                const downloadUrl = await getDownloadURL(snapshot.ref);
+
+                const docRef = doc(db, 'users', currentUid);
+
+                await updateDoc(docRef, {
+                    name: nameInput,
+                    image: downloadUrl,
+                    uid: currentUid,
+                  })
+                  .then(()=>{
+
+                    let data : UserProps =  {
+                        name: nameInput,
+                        image: downloadUrl,
+                        uid: currentUid,
+                    };
+
+                    setUser(data);
+                    storageUser(data);
+                  })
+
+            }else{
+                toast.error('Erro ao atualizar Perfil do usuário', {theme: 'dark'});
             }
-           
+
+        }catch(err){
+            toast.error('Erro ao atualizar Perfil do usuário', {theme: 'dark'});
         }
 
     }
@@ -147,7 +143,8 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
                         type='text'
                         placeholder='Altere seu nome'
                         className='input'
-                        ref={roomRef}
+                        value={nameInput}
+                        onChange={(e)=> setNameInput(e.target.value)}
                     />
 
                     { loading ? (

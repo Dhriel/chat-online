@@ -3,59 +3,60 @@ import './home.scss';
 
 
 import {db} from '../../services/firebaseConnection';
-import {collection, getDocs, query, orderBy, doc, getDoc} from 'firebase/firestore';
+import {collection, getDocs, query, orderBy, doc} from 'firebase/firestore';
 
-import {Link} from 'react-router-dom';
 
 import {FiSettings} from 'react-icons/fi';
-
 import { toast } from 'react-toastify';
 
-
-import {CreateRoom} from '../components/CreateRoom';
 import { EditProfile } from '../components/EditProfile';
 
-import {ThreadsProps} from '../types/Card.type';
+import {ThreadsProps, MessagesProps} from '../types/Card.type';
 
-import {RoomCard} from '../components/RoomCard'
+import {RoomCard} from '../components/RoomCard';
+import {ChatMessages} from '../components/ChatMessages';
 
 
 export function Home(){
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [ProfileModalVisible, setProfileModalVisible] = useState<boolean>(false);
-    const [threads, setThreads] = useState<ThreadsProps[]>([]);
-    const [refresh, setRefresh] = useState<boolean>(true);
+    const [idRoom, setIdRoom] = useState<string>('');
 
-    useEffect(() => {
-        async function getChats() {
-            try {
-                const docRef = collection(db, 'rooms');
-                const q = query(docRef, orderBy('createdAt', 'asc'));
-                const snapshot = await getDocs(q);
-    
-                    const newThreads = snapshot.docs.map(documentSnapshot => ({
-                    idRoom: documentSnapshot.id,
-                    roomName: documentSnapshot.data()?.roomName,
-                    roomImage: documentSnapshot.data()?.roomImage,
-                    owner: documentSnapshot.data()?.owner,
-                    }));
-    
-                setThreads(newThreads);
-                console.log('Rodou');
-          } catch (error) {
-                console.error('Erro ao obter chats:', error);
-                toast.error(`${error}`, { theme: 'dark' });
-          }
+    const [messages, setMessages] = useState<MessagesProps[]>([]);
+
+
+    async function handleChatRoom(id: string){
+        console.log(id);
+        try{
+                    const docRef = doc(db, 'rooms', id);
+                    await getDocs(collection(docRef, 'messages'))
+                    .then((snapshot)=>{
+                        
+                        let list = [] as MessagesProps[];
+
+                        snapshot.docs.forEach((documentSnapshot)=>{
+                            list.push({
+                                createdAt: documentSnapshot.data()?.createdAt,
+                                name: documentSnapshot.data()?.name,
+                                text: documentSnapshot.data()?.text,
+                                image: documentSnapshot.data()?.image,
+                            })
+                        });
+
+                        console.log(list);
+
+                    })
+            
+
+        }catch(error){
+            console.log(error);
         }
-    
-        getChats();
-      }, [refresh]);
-
+    }
 
     return(
         <div className='container'>
-
             
+            {/* Editar perfil  */}
             <label className='nav-settings'>
                     <button onClick={()=> setProfileModalVisible(!ProfileModalVisible)}
                     >
@@ -63,29 +64,35 @@ export function Home(){
                     </button>
             </label>
 
-            <nav className='nav-area'>
-                <ul>
-                    <button onClick={()=> setModalVisible(!modalVisible)}
-                        className='home-button'
-                    >+</button>
-                </ul>
+            {/* Mostrar salas */}
+            <RoomCard changeId={(id)=> setIdRoom(id)}/>
 
-                {threads && threads.map(item => (
-                    <li key={item.idRoom}>
-                        <RoomCard data={item}/>
-                    </li>
-          ))}
-            </nav>
 
-            <main className='chat-box'>
-
-            </main>
+            {/* Chat */}
+            <ChatMessages id={idRoom}/>
             
+            {/* Mostrar grupo ao lado */}
             <section className='info-box'>
+                <div>
+                    <image/>
+                </div>
+
+                <h3>Nome</h3>
+
+                <div>
+                    <p>Icon</p>
+                    <p>Criador do Grupo</p>
+                </div>
+
+                <div>
+                    <div>
+                        <image/>
+                    </div>
+                    <h4>Adriel</h4>
+                </div>
 
             </section>
 
-            <CreateRoom isOpen={modalVisible} changeVisibility={()=> setModalVisible(!modalVisible)} refresh={()=> setRefresh(!refresh)} />
             <EditProfile isOpen={ProfileModalVisible} changeVisibility={()=> setProfileModalVisible(!ProfileModalVisible)}/>
         </div>
     )

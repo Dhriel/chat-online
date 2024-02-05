@@ -2,12 +2,13 @@ import {useState, ReactNode, createContext, useEffect} from 'react';
 
 import { auth, db } from '../services/firebaseConnection';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut} from 'firebase/auth';
-import {setDoc, doc} from 'firebase/firestore';
+import {setDoc, doc, getDoc} from 'firebase/firestore';
 
 import { toast } from 'react-toastify';
 
 import { useNavigate } from 'react-router-dom';
 
+import {UserProps} from './../pages/types/Card.type';
 
 interface AuthProviderProps  {
     children: ReactNode
@@ -17,16 +18,13 @@ type AuthContextData = {
     user: UserProps | null;
     signed: boolean;
     loadingAuth: boolean;
+    setUser: (user: UserProps) => void;
+    storageUser: (data : UserProps) => void;
     signUp: (email:string, password:string, name:string) => void;
     signIn: (email:string, password:string) => void;
     logOut: () => void;
 }
 
-interface UserProps {
-    uid: string;
-    name: string;
-    email: string;
-}
 
 export const AuthContext = createContext({} as AuthContextData);
 
@@ -66,7 +64,6 @@ export default function AuthProvider({children}: AuthProviderProps){
 
             let data = {
                 name: name || '',
-                email: email,
                 uid: uid,
                 image: '',
             }
@@ -120,9 +117,12 @@ export default function AuthProvider({children}: AuthProviderProps){
             let uid = value.user.uid;
             let name =  value.user.displayName;
 
+            const docRef = doc(db, 'users', uid);
+            const docSnap = await getDoc(docRef)
+
             let data = {
                 name: name || '',
-                email: email,
+                image: docSnap.data()?.image,
                 uid: uid
             }
 
@@ -158,7 +158,9 @@ export default function AuthProvider({children}: AuthProviderProps){
                 loadingAuth,
                 signUp,
                 signIn,
-                logOut
+                logOut,
+                setUser,
+                storageUser
             }}
         >
             {children}
