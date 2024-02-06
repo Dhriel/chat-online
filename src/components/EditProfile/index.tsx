@@ -2,7 +2,7 @@ import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { AuthContext } from './../../contexts/AuthContext';
 
 import { db, storage } from './../../services/firebaseConnection';
-import { doc, updateDoc, getDocs, collection } from 'firebase/firestore';
+import { doc, updateDoc} from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, } from 'firebase/storage';
 
 import './../CreateRoom/createroom.scss'

@@ -36,7 +36,7 @@ export function ChatMessages({ id }: ChatMessagesProps) {
         try {
             const docRef = doc(db, 'rooms', id);
 
-            const unsubscribe = onSnapshot(
+            onSnapshot(
                 query(collection(docRef, 'messages'), orderBy('createdAt')),
                 (snapshot) => {
                     let list = [] as MessagesProps[];
