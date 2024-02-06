@@ -170,11 +170,8 @@
     .modal{
         width: 80%;
         height: 450px;
-        background-color: transparent;
-        
-        label{  
-            background-color: purple;
-        }
+        background-color: $primary;
+
 
         .input{
             background-color: $secundary;
