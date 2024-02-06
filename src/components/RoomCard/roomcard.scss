@@ -1,22 +1,24 @@
 @import '../../assets/presets.scss';
 
 
-.nav-container{
+.nav-container {
     overflow-y: auto;
     overflow-x: hidden;
-    .nav-area{
+
+    .nav-area {
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-    
-        ul, li{
+
+        ul,
+        li {
             list-style: none;
         }
-    
+
     }
 
-    .room-button{
+    .room-button {
         width: 60px;
         height: 60px;
         border-radius: 35px;
@@ -24,7 +26,7 @@
         margin-top: 15px;
         margin-bottom: 10px;
         margin-left: 10px;
-        
+
         background-color: $secundary;
         font-size: 2.5rem;
         display: flex;
@@ -32,15 +34,16 @@
         align-items: center;
         color: #fff;
         cursor: pointer;
-        &:hover{
+
+        &:hover {
             background-color: #424242;
         }
-        
+
     }
-    
+
 }
 
-.room-card{
+.room-card {
     width: 110px;
     height: 70px;
     border-width: 0;
@@ -52,32 +55,31 @@
     border-left: 5px solid $primary;
     margin-bottom: 10px;
 
-    &:hover{
+    &:hover {
         border-left: 5px solid $terc;
         margin-bottom: 10px;
         background-color: #00388c11
-    
     }
-    
-    .room-card-button{
+
+    .room-card-button {
         width: 60px;
         height: 60px;
         border-radius: 35px;
         cursor: pointer;
         border: none;
         background-color: $secundary;
-        
-        
+
+
     }
 
-    img{
+    img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         border-radius: calc(150px/2);
     }
 
-    span{
+    span {
         color: #d8d8d8;
         font-weight: bold;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

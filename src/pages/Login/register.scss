@@ -1,4 +1,4 @@
-@import './../../assets/presets.scss'; 
+@import './../../assets/presets.scss';
 
 
 .box {
@@ -11,17 +11,17 @@
     flex-direction: column;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-    h1{
+    h1 {
         color: #fff;
         font-size: 4rem;
     }
 
-    p{
+    p {
         font-size: 1rem;
         color: #ccc;
     }
 
-    button{
+    button {
         background-color: $terc;
         padding: 13px;
         width: 155px;
@@ -33,18 +33,18 @@
         cursor: pointer;
         box-shadow: inset 5px 5px 10px rgba(17, 21, 22, 0.596);
 
-        &:hover{
-        background-color: #1a6ce7;
+        &:hover {
+            background-color: #1a6ce7;
 
         }
     }
 
-    .link-area{
+    .link-area {
         min-width: 500px;
         max-width: 100%;
         margin-top: 20px;
 
-        a{
+        a {
             color: #fff;
             cursor: pointer;
             text-decoration: none;
@@ -59,19 +59,19 @@
     max-width: 100%;
 
 
-    label{
+    label {
         display: flex;
         flex-direction: column;
         margin-bottom: 15px;
 
-        span{
+        span {
             color: #fff;
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 7px;
         }
 
-        input{
+        input {
             width: 100%;
             height: 40px;
             padding: 8px;
@@ -79,10 +79,10 @@
             border-width: 0;
             border-radius: 4px;
             color: #fff;
-            
+
         }
 
-        p{
+        p {
             font-size: 15px;
             margin-top: 4px;
             color: #d43e3e;

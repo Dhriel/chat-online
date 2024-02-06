@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
-// Nova configuração do Firebase
+
 const anotherFirebaseConfig = {
   apiKey: "AIzaSyDorDJQHWpM9DE0Gumcfatguqkejvm44zI",
   authDomain: "chatonline-b9c83.firebaseapp.com",
@@ -15,13 +15,12 @@ const anotherFirebaseConfig = {
   measurementId: "G-S07YPLBB2N"
 };
 
-// Inicialize o Firebase com a nova configuração
 const newChatApp = initializeApp(anotherFirebaseConfig);
 
-// Obtenha instâncias para o novo Firebase
+
 const newDb = getFirestore(newChatApp);
 const newAuth = getAuth(newChatApp);
 const newStorage = getStorage(newChatApp);
 
-// Exporte apenas as instâncias do novo Firebase
+
 export { newDb as db, newAuth as auth, newStorage as storage };
