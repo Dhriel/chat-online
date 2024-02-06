@@ -1,56 +1,75 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './home.scss';
 
 
 import {db} from '../../services/firebaseConnection';
-import {collection, getDocs, query, orderBy, doc} from 'firebase/firestore';
+import {getDoc, doc} from 'firebase/firestore';
 
+import { GiQueenCrown } from "react-icons/gi";
 
 import {FiSettings} from 'react-icons/fi';
+
+import { EditProfile } from '../../components/EditProfile';
+
+import {ThreadsProps, UserProps} from '../../types/Card.type';
+
+import {RoomCard} from '../../components/RoomCard';
+import {ChatMessages} from '../../components/ChatMessages';
+
+
 import { toast } from 'react-toastify';
 
-import { EditProfile } from '../components/EditProfile';
+import defaultAvatar from '../../assets/images/avatar.jpg';
 
-import {ThreadsProps, MessagesProps} from '../types/Card.type';
-
-import {RoomCard} from '../components/RoomCard';
-import {ChatMessages} from '../components/ChatMessages';
 
 
 export function Home(){
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [ProfileModalVisible, setProfileModalVisible] = useState<boolean>(false);
+
     const [idRoom, setIdRoom] = useState<string>('');
+    const [threads, setThreads] = useState<ThreadsProps>();
+    const [userInfo, setUserInfo] = useState<UserProps>();
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const [messages, setMessages] = useState<MessagesProps[]>([]);
 
+    async function handleChatRoom(data : ThreadsProps){
+        if(data){
 
-    async function handleChatRoom(id: string){
-        console.log(id);
-        try{
-                    const docRef = doc(db, 'rooms', id);
-                    await getDocs(collection(docRef, 'messages'))
-                    .then((snapshot)=>{
-                        
-                        let list = [] as MessagesProps[];
+            try{
+                setLoading(true);
+                setIdRoom(data?.idRoom);
 
-                        snapshot.docs.forEach((documentSnapshot)=>{
-                            list.push({
-                                createdAt: documentSnapshot.data()?.createdAt,
-                                name: documentSnapshot.data()?.name,
-                                text: documentSnapshot.data()?.text,
-                                image: documentSnapshot.data()?.image,
-                            })
-                        });
+                await getDoc(doc(db, 'users', data?.owner))
+                .then((snapshot)=>{
+    
+                    let list : UserProps = {
+                        name: snapshot.data()?.name,
+                        image: snapshot.data()?.image,
+                        uid: data?.owner
+                    }
+    
+    
+                    setUserInfo(list);
+                    setThreads(data);
+                    setLoading(false);
+    
+                })
+                .catch(()=>{
+                    toast.error(`Erro ao buscar sala, tente novamente!`, {theme: 'dark'});
+                    setLoading(false);
+                })
 
-                        console.log(list);
+            } catch(err){
+                toast.error(`Erro ao buscar sala, tente novamente!`, {theme: 'dark'});
+                setLoading(false);
 
-                    })
-            
+            }
+    
 
-        }catch(error){
-            console.log(error);
         }
+
+
+        
     }
 
     return(
@@ -65,33 +84,36 @@ export function Home(){
             </label>
 
             {/* Mostrar salas */}
-            <RoomCard changeId={(id)=> setIdRoom(id)}/>
+            <RoomCard changeId={(id)=> handleChatRoom(id)}/>
 
 
             {/* Chat */}
             <ChatMessages id={idRoom}/>
             
             {/* Mostrar grupo ao lado */}
-            <section className='info-box'>
-                <div>
-                    {/* <image/> */}
+           {threads && userInfo && 
+             <section className='info-box'>
+                <div className='img-area'>
+                    <img src={threads.roomImage}/>
                 </div>
 
-                <h3>Nome</h3>
+                <div className='profile-name'>
+                    <h1>{threads.roomName}</h1>
+                </div>
 
-                <div>
-                    <p>Icon</p>
+                <div className='profile-icon'>
+                    <GiQueenCrown size={25} color='yellow' />
                     <p>Criador do Grupo</p>
                 </div>
 
-                <div>
+                <div className='profile-creator'>
+                    <img src={userInfo?.image === '' ? defaultAvatar : userInfo?.image}/>
                     <div>
-                        <image/>
+                        <h2>{userInfo?.name}</h2>
                     </div>
-                    <h4>Adriel</h4>
                 </div>
-
             </section>
+           }
 
             <EditProfile isOpen={ProfileModalVisible} changeVisibility={()=> setProfileModalVisible(!ProfileModalVisible)}/>
         </div>

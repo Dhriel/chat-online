@@ -1,4 +1,4 @@
-@import '../../../assets/presets.scss'; 
+@import '../../assets/presets.scss';
 
 
 .modal-container{
@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 99;
 
 }
 
@@ -83,7 +84,7 @@
     }
 
     .create-btn{
-        background-color: $terc;
+        background-color: #1a6ce7;
         padding: 9px;
         width: 155px;
         margin-top: 10px;
@@ -93,10 +94,18 @@
         border: none;
         cursor: pointer;
         box-shadow: inset 1px 5px 10px rgba(18, 20, 20, 0.671);
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover{
-        background-color: #1a6ce7;
+        background-color: #3c79d6;
 
+        }
+
+        img{
+            width: 30px;
+            height: 30px;
         }
     }
 

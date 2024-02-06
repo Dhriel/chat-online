@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import {ThreadsProps} from '../../types/Card.type';
 
-import {db} from '../../../services/firebaseConnection';
+import {db} from './../../services/firebaseConnection';
 import {collection, getDocs, query, orderBy} from 'firebase/firestore';
 
 import { toast } from 'react-toastify';
@@ -10,10 +11,11 @@ import { toast } from 'react-toastify';
 import {CreateRoom} from '../CreateRoom';
 
 
+
 import './roomcard.scss';
 
 interface RoomCardProps {
-    changeId: (id: string) => void;
+    changeId: (data : ThreadsProps) => void;
   }
 
 
@@ -23,6 +25,8 @@ export function RoomCard({changeId} : RoomCardProps){
   const [refresh, setRefresh] = useState<boolean>(true);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+  const {signed} = useContext(AuthContext);
 
 
   useEffect(() => {
@@ -40,7 +44,6 @@ export function RoomCard({changeId} : RoomCardProps){
                 }));
 
             setThreads(newThreads);
-            console.log('Rodou');
       } catch (error) {
             console.error('Erro ao obter chats:', error);
             toast.error(`${error}`, { theme: 'dark' });
@@ -55,16 +58,18 @@ export function RoomCard({changeId} : RoomCardProps){
       <div className='nav-container'>
           <nav className='nav-area'>
           
-          <ul>
+          {signed &&
+            <ul>
               <button onClick={()=> setModalVisible(!modalVisible)}
                   className='room-button'
               >+</button>
-          </ul>
+            </ul>
+          }
 
           {threads && threads.map(item => (
               <li key={item.idRoom}>
                   <div className="room-card">
-                    <button className='room-card-button' onClick={()=> changeId(item.idRoom)}>
+                    <button className='room-card-button' onClick={()=> changeId(item)}>
                       <img src={item.roomImage} alt={`Imagem da sala ${item.roomName}`} />
                     </button>
                     <span>{item.roomName}</span>

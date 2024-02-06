@@ -1,8 +1,8 @@
 import {ChangeEvent, useContext, useRef, useState} from 'react';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { AuthContext } from './../../contexts/AuthContext';
 
-import {db, storage} from '../../../services/firebaseConnection';
-import {doc, updateDoc} from 'firebase/firestore';
+import {db, storage} from './../../services/firebaseConnection';
+import {doc, updateDoc, getDocs, collection} from 'firebase/firestore';
 import {ref, uploadBytes, getDownloadURL,} from 'firebase/storage';
 
 import './../CreateRoom/createroom.scss'
@@ -10,7 +10,7 @@ import './../CreateRoom/createroom.scss'
 import {FiUpload, FiX} from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-import loadImage from '../../../assets/images/load.svg';
+import loadImage from './../../assets/images/load.svg';
 
 import {UserProps} from '../../types/Card.type';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ interface RoomProps {
 }
 
 export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
-    const {signed, user, setUser, logOut} = useContext(AuthContext);
+    const {signed, user, setUser, logOut, storageUser} = useContext(AuthContext);
 
     const [imageAvatar,setImageAvatar] = useState<File | null>(null);
     const [nameInput, setNameInput] = useState<string>(user && user?.name || '');
@@ -49,17 +49,11 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
         setImageAvatar(null);
         setAvatarUrl(null);
         setLoading(false);
-        toast.success('Perfil atualizado com sucesso!', {theme: 'dark'});
         changeVisibility();
+        toast.success('Perfil atualizado com sucesso!', {theme: 'dark'});
         
     }
 
-
-    async function handleCreate(url: string){
-
-       // Mudar a foto em todos os lugares
-
-    }
 
     function handleFile(e : ChangeEvent<HTMLInputElement>){
         if(e.target.files && e.target.files[0] ){
@@ -94,7 +88,7 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
                     image: downloadUrl,
                     uid: currentUid,
                   })
-                  .then(()=>{
+                  .then(async ()=>{
 
                     let data : UserProps =  {
                         name: nameInput,
@@ -103,6 +97,7 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
                     };
 
                     setUser(data);
+                    storageUser(data);
                   })
 
             }else{
@@ -115,7 +110,6 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
 
     }
 
-    
 
 
     if (isOpen){
@@ -154,7 +148,7 @@ export  function EditProfile({isOpen, changeVisibility} : RoomProps) {
 
                         <div className='btn-area'>
                             { loading ? (
-                                    <div className='load-area'>
+                                    <div className='create-btn'>
                                         <img src={loadImage} alt='carregando' />
                                     </div>
                                 ) : (

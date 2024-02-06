@@ -1,13 +1,19 @@
 import {useState, useEffect, useRef, useContext} from 'react';
 import './messages.scss';
-import {AuthContext} from '../../../contexts/AuthContext';
+import {AuthContext} from '../../contexts/AuthContext';
 
 import {MessagesProps} from '../../types/Card.type';
 
-import {db} from '../../../services/firebaseConnection';
+import {db} from '../../services/firebaseConnection';
 import {collection, doc, onSnapshot, query, orderBy, addDoc} from 'firebase/firestore';
 
-import defaultAvatar from '../../../assets/images/avatar.jpg';
+import defaultAvatar from '../../assets/images/avatar.jpg';
+import { Link, isRouteErrorResponse } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+
+import loadImage from './../../assets/images/load.svg';
+
 
 interface ChatMessagesProps {
     id: string
@@ -15,6 +21,7 @@ interface ChatMessagesProps {
 
 export function ChatMessages({id} : ChatMessagesProps) {
     const [messages, setMessages] = useState<MessagesProps[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     
     const {user, signed} = useContext(AuthContext);
     
@@ -23,7 +30,7 @@ export function ChatMessages({id} : ChatMessagesProps) {
 
     useEffect(()=>{
         if(!id) return;
-        console.log('Página chatMessages: rodou')
+        setLoading(true);
         try {
             const docRef = doc(db, 'rooms', id);
 
@@ -41,13 +48,17 @@ export function ChatMessages({id} : ChatMessagesProps) {
                         dateHour: documentSnapshot.data()?.dateHour
                     });
                 });
-                console.log(list);
                 setMessages(list);
+                setLoading(false);
+                
             }
         );
 
         } catch (error) {
             console.log(error);
+            setLoading(false);
+            toast.error(`Erro ao carregar o Chat`, {theme: 'dark'});
+
         }
 
     }, [id]);
@@ -64,29 +75,38 @@ export function ChatMessages({id} : ChatMessagesProps) {
 
 
     async function handleMessages(): Promise<void>{
-        if(!signed) return;
+        if(!id){
+            toast.error('Clique em uma sala para começar uma conversa', {theme: 'dark'});
+            return;
+        }
+        if(!signed) {
+            toast.error('Você precisar estar logado para falar no chat', {theme: 'dark'});
+            return;
+        };
         let message = '';
 
         if (inputTextRef.current) {
-            console.log(inputTextRef.current.value);
             message = inputTextRef.current.value;
-            inputTextRef.current.value = ''; // Define o valor do input como uma string vazia
+            inputTextRef.current.value = ''; 
         }
-
-        console.log(message);
 
         let formatedDate = getDate();
         
         try {
-            const docRef = doc(db, 'rooms', id);
-            const collectionRef = collection(docRef, 'messages');
-            await addDoc(collectionRef, {
-                createdAt: new Date(),
-                text: message,
-                name: user?.name,
-                image: user?.image,
-                dateHour: formatedDate
-            });
+            if(user &&  user.name && user.image){
+                console.log('chegou aqui')
+                const docRef = doc(db, 'rooms', id);
+                const collectionRef = collection(docRef, 'messages');
+
+                
+                await addDoc(collectionRef, {
+                    createdAt: new Date(),
+                    text: message,
+                    name: user?.name,
+                    image: user?.image,
+                    dateHour: formatedDate
+                });
+            }
 
         }catch(err){
             console.log(err);
@@ -115,28 +135,39 @@ export function ChatMessages({id} : ChatMessagesProps) {
           chatArea.scrollTop = chatArea.scrollHeight;
         }
       }
+
       
     return(
-        <main className='chat-box'>
-           
+        <main className='chat-box'> 
+
             <div className='chat-area' ref={scrollRef}>
-                {messages && messages.map((item, index)=> (
-                    <div key={index} className='chat-container'>
-                        <div className='chat-image'>
-                            <img
-                                src={item.image ? item.image : defaultAvatar}
-                                loading='lazy'
-                            />
-                        </div>
-                        <div className='chat-right'>
-                            <div>
-                                <span className='chat-username'>{item.name}</span>
-                                <span className='chat-time'>{item.dateHour}</span>
-                            </div>
-                            <p className='chat-text'>{item.text}</p>
-                        </div>
+
+                {loading ? 
+                    <div className='loading-area'>
+                        <img src={loadImage} alt='Carregando'/>
                     </div>
-                ))}
+                    :
+                    <>
+                        {messages && messages.map((item, index)=> (
+                        <div key={index} className='chat-container'>
+                            <div className='chat-image'>
+                                <img
+                                    src={item.image ? item.image : defaultAvatar}
+                                    loading='lazy' alt='Imagem de Perfil do Usuário'
+                                />
+                            </div>
+                            <div className='chat-right'>
+                                <div>
+                                    <span className='chat-username'>{item.name}</span>
+                                    <span className='chat-time'>{item.dateHour}</span>
+                                </div>
+                                <p className='chat-text'>{item.text}</p>
+                            </div>
+                        </div>
+                    ))}
+                    </>
+                }
+
             </div> 
 
             <div className='message-box'>
