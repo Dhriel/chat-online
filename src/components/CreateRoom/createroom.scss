@@ -81,12 +81,13 @@
         width: 100%;
         display: flex;
         justify-content: space-evenly;
+        align-items: center;
     }
 
     .create-btn {
         background-color: #1a6ce7;
         padding: 9px;
-        width: 155px;
+        width: 150px;
         margin-top: 10px;
         border-radius: 10px;
         color: #fff;
@@ -110,7 +111,7 @@
     }
 
     .x-btn {
-        background-color: $primary;
+        background-color: $secundary;
         padding: 9px;
 
         border-radius: 10px;
@@ -161,4 +162,33 @@
         }
     }
 
+}
+
+
+@media (max-width: 500px) {
+
+    .modal{
+        width: 80%;
+        height: 450px;
+        background-color: transparent;
+        
+        label{  
+            background-color: purple;
+        }
+
+        .input{
+            background-color: $secundary;
+            
+        }
+
+        .btn-area{
+            flex-direction: column;
+        }
+
+        .create-btn{
+            margin-bottom: 15px;
+        }
+
+
+    }
 }

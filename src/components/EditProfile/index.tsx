@@ -154,6 +154,7 @@ export function EditProfile({ isOpen, changeVisibility }: RoomProps) {
                                 className='input'
                                 value={nameInput}
                                 onChange={(e) => setNameInput(e.target.value)}
+                                maxLength={20}
                             />
 
                             <div className='btn-area'>

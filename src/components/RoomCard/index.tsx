@@ -9,6 +9,10 @@ import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
 import { CreateRoom } from '../CreateRoom';
+import { EditProfile } from '../EditProfile';
+
+import { FiSettings } from 'react-icons/fi';
+
 
 
 
@@ -25,6 +29,8 @@ export function RoomCard({ changeId }: RoomCardProps) {
   const [refresh, setRefresh] = useState<boolean>(true);
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [ProfileModalVisible, setProfileModalVisible] = useState<boolean>(false);
+
 
   const { signed } = useContext(AuthContext);
 
@@ -60,25 +66,26 @@ export function RoomCard({ changeId }: RoomCardProps) {
 
         {signed &&
           <ul>
-            <button onClick={() => setModalVisible(!modalVisible)}
-              className='room-button'
-            >+</button>
+            <button onClick={() => setModalVisible(!modalVisible)} className='room-button'>+</button>
+            <button onClick={() => setProfileModalVisible(!ProfileModalVisible)} className='room-button' style={{ backgroundColor: "#00388C" }}>
+              <FiSettings size={30} color='#fff' />
+            </button>
           </ul>
         }
 
         {threads && threads.map(item => (
           <li key={item.idRoom}>
-            <div className="room-card">
+            <div className="room-card" data-name={item.roomName}>
               <button className='room-card-button' onClick={() => changeId(item)}>
                 <img src={item.roomImage} alt={`Imagem da sala ${item.roomName}`} />
               </button>
-              <span>{item.roomName}</span>
             </div>
           </li>
         ))}
 
       </nav>
       <CreateRoom isOpen={modalVisible} changeVisibility={() => setModalVisible(!modalVisible)} refresh={() => setRefresh(!refresh)} />
+      <EditProfile isOpen={ProfileModalVisible} changeVisibility={() => setProfileModalVisible(!ProfileModalVisible)} />
     </div>
 
   )

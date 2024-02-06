@@ -1,7 +1,7 @@
 import { useState, ReactNode, createContext, useEffect } from 'react';
 
 import { auth, db } from '../services/firebaseConnection';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
 
 import { toast } from 'react-toastify';

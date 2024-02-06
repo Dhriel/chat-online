@@ -40,9 +40,8 @@
     }
 
     .link-area {
-        min-width: 500px;
-        max-width: 100%;
         margin-top: 20px;
+
 
         a {
             color: #fff;
@@ -55,7 +54,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    min-width: 500px;
+    width: 500px;
     max-width: 100%;
 
 
@@ -88,5 +87,31 @@
             color: #d43e3e;
         }
     }
+
+}
+
+
+@media (max-width: 580px) {
+
+    .box {
+        h1 {
+            font-size: 3rem;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+    }
+
+    .form {
+
+        width: 80%;
+
+        label {
+            width: 100% input {}
+        }
+
+    }
+
 
 }

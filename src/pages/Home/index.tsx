@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './home.scss';
 
 
@@ -7,9 +7,6 @@ import { getDoc, doc } from 'firebase/firestore';
 
 import { GiQueenCrown } from "react-icons/gi";
 
-import { FiSettings } from 'react-icons/fi';
-
-import { EditProfile } from '../../components/EditProfile';
 
 import { ThreadsProps, UserProps } from '../../types/Card.type';
 
@@ -22,11 +19,38 @@ import { toast } from 'react-toastify';
 import defaultAvatar from '../../assets/images/avatar.jpg';
 
 export function Home() {
-    const [ProfileModalVisible, setProfileModalVisible] = useState<boolean>(false);
 
-    const [idRoom, setIdRoom] = useState<string>('');
+    const [idRoom, setIdRoom] = useState<string>('nCLIpMyYQJhNYGvaVJEK');
+
     const [threads, setThreads] = useState<ThreadsProps>();
     const [userInfo, setUserInfo] = useState<UserProps>();
+
+
+
+    useEffect(()=>{
+
+        async function loadRoom(){
+
+            const docRef = doc(db, 'rooms', idRoom);
+            await getDoc(docRef).then((snapshot)=>{
+
+                let data: ThreadsProps = {
+
+                    idRoom: snapshot.id,
+                    roomName: snapshot.data()?.roomName,
+                    roomImage: snapshot.data()?.roomImage,
+                    owner: snapshot.data()?.owner,
+                }
+    
+                handleChatRoom(data);
+            })
+
+
+        }
+        
+        loadRoom();
+
+    },[])
 
 
     async function handleChatRoom(data: ThreadsProps) {
@@ -62,22 +86,10 @@ export function Home() {
     return (
         <div className='container'>
 
-            {/* Editar perfil  */}
-            <label className='nav-settings'>
-                <button onClick={() => setProfileModalVisible(!ProfileModalVisible)}
-                >
-                    <FiSettings size={30} color='#fff' />
-                </button>
-            </label>
-
-            {/* Mostrar salas */}
             <RoomCard changeId={(id) => handleChatRoom(id)} />
 
-
-            {/* Chat */}
             <ChatMessages id={idRoom} />
 
-            {/* Mostrar grupo ao lado */}
             {threads && userInfo &&
                 <section className='info-box'>
                     <div className='img-area'>
@@ -89,8 +101,7 @@ export function Home() {
                     </div>
 
                     <div className='profile-icon'>
-                        <GiQueenCrown size={25} color='yellow' />
-                        <p>Criador do Grupo</p>
+                        <GiQueenCrown size={50} color='yellow' />
                     </div>
 
                     <div className='profile-creator'>
@@ -101,8 +112,6 @@ export function Home() {
                     </div>
                 </section>
             }
-
-            <EditProfile isOpen={ProfileModalVisible} changeVisibility={() => setProfileModalVisible(!ProfileModalVisible)} />
         </div>
     )
 }

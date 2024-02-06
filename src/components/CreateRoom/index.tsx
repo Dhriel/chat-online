@@ -174,6 +174,7 @@ export function CreateRoom({ isOpen, changeVisibility, refresh }: RoomProps) {
                         placeholder='Digite algum nome'
                         className='input'
                         ref={roomRef}
+                        maxLength={25}
                     />
 
                     {loading ? (

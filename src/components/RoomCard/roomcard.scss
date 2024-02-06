@@ -1,12 +1,16 @@
 @import '../../assets/presets.scss';
 
+::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
 
 .nav-container {
     overflow-y: auto;
     overflow-x: hidden;
 
     .nav-area {
-        height: 100%;
+        height: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -61,6 +65,7 @@
         background-color: #00388c11
     }
 
+
     .room-card-button {
         width: 60px;
         height: 60px;
@@ -85,4 +90,84 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         display: none;
     }
+}
+
+
+@media (max-width: 760px) {
+
+    .room-card {
+        &:hover::before {
+            content: attr(data-name);
+            position: absolute;
+            top: 0;
+            right: 0px;
+            background-color: $terc;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 999;
+            font-size: 20px;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+        }
+    }
+
+}
+
+
+@media (max-width: 580px) {
+
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    .nav-container {
+        width: 100%;
+        height: 100px;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        .nav-area {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        ul{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .room-button {
+            margin-bottom: 20px;
+        }
+
+        .room-card {
+            width: 80px;
+
+            &:hover{
+                
+                border-bottom: #Fff;
+                border-bottom-width: 2px;
+            }
+
+            &:hover::before {
+                top: 90px;
+                right: 0;
+                font-size: 16px;
+                padding: 10px;
+                text-align: center;
+                width: auto;
+                background-color: $terc;
+    
+
+            }
+        }
+
+
+    }
+
+
+
 }

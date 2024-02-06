@@ -46,11 +46,11 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
 
+
     .img-area {
         margin-top: 20px;
-        margin-bottom: 10px;
-        width: 200px;
-        height: 200px;
+        width: 130px;
+        height: 130px;
         border-radius: 100px;
         display: flex;
         justify-content: center;
@@ -67,53 +67,59 @@
 
     .profile-name {
         width: 100%;
-        padding: 10px;
+        padding: 15px;
 
         h1 {
             word-break: break-word;
-            font-size: 30px;
+            font-size: 25px;
             text-align: center;
+            color: #fff
         }
     }
 
     .profile-icon {
         display: flex;
-        padding: 10px;
+        margin-top: 20px;
+        background-color: #0c0c0c;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
 
-        p {
-            margin-left: 10px;
-            font-size: 20px;
-            font-weight: 500;
-            color: yellow;
-        }
+
     }
 
     .profile-creator {
+        width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        margin-top: 10px;
+        justify-content: center;
+        background-color: #0c0c0c;
+        padding-bottom: 10px;
 
         img {
-            width: 40px;
-            height: 40px;
-            border-radius: 20px;
-            margin-right: 10px;
+            width: 70px;
+            height: 70px;
+            border-radius: 40px;
             object-fit: cover;
+            margin-bottom: 10px;
         }
 
         div {
-            width: 200px;
+            display: flex;
+            justify-content: center;
         }
 
         h2 {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word;
+            font-size: 20px;
+            text-align: center;
+            color: #ccc;
         }
     }
 
 }
-
 
 .profile-load {
     display: flex;
@@ -125,6 +131,63 @@
     img {
         width: 60px;
         height: 60px;
+    }
+
+}
+
+
+
+@media (max-width: 1024px) {
+
+    .container {
+        grid-template-columns: 110px 1fr 150px;
+
+    }
+
+    .info-box {
+
+        .img-area {
+            width: 100px;
+            height: 100px;
+        }
+
+        .profile-name {
+            h1 {
+                font-size: 25px;
+            }
+        }
+
+        .profile-icon {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+
+    }
+
+}
+
+@media (max-width: 760px) {
+
+    .container{
+        grid-template-columns: 110px 1fr 0px;
+
+        .info-box{
+            display: none;
+        }
+
+    }
+
+}
+
+@media (max-width: 580px){
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        
     }
 
 }

@@ -178,6 +178,7 @@ export function ChatMessages({ id }: ChatMessagesProps) {
                     placeholder='Escreva algo aqui'
                     ref={inputTextRef}
                     onKeyDown={handleKeyDown}
+                    maxLength={300}
 
                 />
             </div>
