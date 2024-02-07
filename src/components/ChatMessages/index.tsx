@@ -14,6 +14,8 @@ import { MessagesProps } from '../../types/Card.type';
 import loadImage from './../../assets/images/load.svg';
 import defaultAvatar from '../../assets/images/avatar.jpg';
 
+import { AiOutlineSend } from "react-icons/ai";
+
 
 interface ChatMessagesProps {
     id: string
@@ -181,6 +183,9 @@ export function ChatMessages({ id }: ChatMessagesProps) {
                     maxLength={300}
 
                 />
+                <button onClick={()=> handleMessages()}>
+                    <AiOutlineSend  size={25} color='#fff'/>
+                </button>
             </div>
 
         </main>

@@ -87,9 +87,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $secundary;
     padding-bottom: 20px;
     padding-top: 10px;
+    position: relative;
+    background-color: $secundary;
 
     input {
         background-color: $primary;
@@ -100,11 +101,22 @@
         color: #ccc;
         font-size: 14px;
         padding: 20px;
+        padding-right: 60px;
 
         &:focus {
             outline: 1px solid #cccccc50;
         }
 
+    }
+
+    button{
+        position: absolute;
+        right: 30px;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        border-radius: 20px;
+        
     }
 }
 
