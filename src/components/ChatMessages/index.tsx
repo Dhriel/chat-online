@@ -97,7 +97,7 @@ export function ChatMessages({ id }: ChatMessagesProps) {
         let formatedDate = getDate();
 
         try {
-            if (user && user.name && user.image) {
+            if (user && user.name) {
                 const docRef = doc(db, 'rooms', id);
                 const collectionRef = collection(docRef, 'messages');
 
