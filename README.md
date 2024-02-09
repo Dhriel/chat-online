@@ -1,7 +1,7 @@
 ![Chat online](https://github.com/Dhriel/chat-online/assets/92495012/826ef193-5980-44dc-b866-bc878cead115)
 
 ## AppWeb de Conversas Online
-O Chat App é uma aplicação web de mensagens instantâneas, desenvolvida em React. Inspirado no Discrod, o aplicativo permite que os usuários se comuniquem em tempo real por meio de salas de chat, além de oferecer funcionalidades de criação de perfil e autenticação de usuários.
+O Chat App é uma aplicação web de mensagens instantâneas, desenvolvida em React. Inspirado no Discord, o aplicativo permite que os usuários se comuniquem em tempo real por meio de salas de chat, além de oferecer funcionalidades de criação de perfil e autenticação de usuários.
 
 💬 Entrem e conversem!
 
