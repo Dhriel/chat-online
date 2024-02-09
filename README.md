@@ -15,7 +15,7 @@ O Chat App é uma aplicação web de mensagens instantâneas, desenvolvida em Re
 
 ### 💡 Veja o vídeo do projeto completo no meu Linkedin! 
 
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/feed/update/urn:li:activity:7132425052288921600/)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/feed/update/urn:li:ugcPost:7161768066878455810/)
 
 
 ## 📌 Principais Funcionalidades
@@ -38,6 +38,8 @@ O Chat App é uma aplicação web de mensagens instantâneas, desenvolvida em Re
 
 ### Mensagens em Tempo Real
 - Todas as mensagens são entregues em tempo real aos participantes da sala de chat, proporcionando uma experiência de conversação instantânea.
+
+## 📸 Fotos do Projeto
 
 ![image](https://github.com/Dhriel/chat-online/assets/92495012/3254ced6-3e7c-445f-bbf6-43f91e7a46d1)
 ![image](https://github.com/Dhriel/chat-online/assets/92495012/3574db80-c4f0-4db8-a215-2b6a390d7a90)![image](https://github.com/Dhriel/chat-online/assets/92495012/1bdccde8-651b-4166-a76e-0189b6d98aee)
