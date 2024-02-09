@@ -3,6 +3,10 @@
 ## AppWeb de Conversas Online
 O Chat App é uma aplicação web de mensagens instantâneas, desenvolvida em React. Inspirado no Discrod, o aplicativo permite que os usuários se comuniquem em tempo real por meio de salas de chat, além de oferecer funcionalidades de criação de perfil e autenticação de usuários.
 
+💬 Entrem e conversem!
+
+Link do Site: https://chat-online-adriel.netlify.app 
+
 ## ⚙️ Tecnologias usadas
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) 
